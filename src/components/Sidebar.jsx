@@ -1,14 +1,13 @@
 import { Navbar, Nav, NavItem, NavLink } from 'reactstrap'
 import { FaBrain, FaHome, FaCalendar, FaUser } from 'react-icons/fa'
+import { GiBrain } from 'react-icons/gi'
 import { useNavigate } from 'react-router-dom'
 import '../assets/css/sidebar.css'
 
 const Sidebar = () => {
   const navigate = useNavigate()
 
-  const handleNavigate = (route) => {
-    navigate(route)
-  }
+  const handleNavigate = (route) => navigate(route)
 
   return (
     <Navbar
@@ -17,7 +16,7 @@ const Sidebar = () => {
       style={{ width: '200px', height: '930px' }}
     >
       <NavLink onClick={() => handleNavigate('/')} className='m-2 d-flex align-items-center'>
-        <FaBrain className='fs-2 me-2 mb-1' />
+        <GiBrain className='fs-2 me-2 mb-1' />
         <h1 className='fs-3'>PsicoPanel</h1>
       </NavLink>
       <Nav vertical className='w-100 links'>
