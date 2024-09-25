@@ -1,0 +1,18 @@
+body {
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  background: url('http://www.digiphotohub.com/wp-content/uploads/2015/09/bigstock-Abstract-Blurred-Background-Of-92820527.jpg');
+}
+:root {
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
+}

@@ -1,0 +1,11 @@
+.links .nav-item a {
+  font-size: 18px;
+  color: white;
+}
+.links .nav-item {
+  cursor: pointer;
+}
+.links a:hover {
+  color: black;
+  background-color: rgb(255, 255, 255) !important;
+}
