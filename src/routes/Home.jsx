@@ -29,14 +29,18 @@ const Home = () => {
           </div>
         </div>
         <h2 className='title'>Estatísticas</h2>
-        <div className='row'>
-          <div className='col-2 card-estatistica'>
-            <h3>12</h3>
-            <p>Pacientes</p>
+        <div className='row gx-2'>
+          <div className='col-2'>
+            <div className='card-estatistica'>
+              <h3>3</h3>
+              <p>Pacientes</p>
+            </div>
           </div>
-          <div className='col-2 card-estatistica'>
-            <h3>4</h3>
-            <p>Consultas para hoje</p>
+          <div className='col-2'>
+            <div className='card-estatistica'>
+              <h3>4</h3>
+              <p>Sessões no dia</p>
+            </div>
           </div>
         </div>
       </div>

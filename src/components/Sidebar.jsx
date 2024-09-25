@@ -15,8 +15,8 @@ const Sidebar = () => {
       fixed='left'
       style={{ width: '200px', height: '930px' }}
     >
-      <NavLink onClick={() => handleNavigate('/')} className='m-2 d-flex align-items-center'>
-        <GiBrain className='fs-2 me-2 mb-1' />
+      <NavLink onClick={() => handleNavigate('/')} className='m-2 d-flex brand'>
+        <GiBrain className='fs-2 me-2 mb-2' />
         <h1 className='fs-3'>PsicoPanel</h1>
       </NavLink>
       <Nav vertical className='w-100 links'>

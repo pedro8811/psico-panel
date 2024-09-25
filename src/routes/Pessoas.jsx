@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Table,
   Button,
@@ -8,14 +9,17 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Form,
+  FormGroup,
+  Label,
+  Input,
 } from 'reactstrap'
-import { FaEdit, FaEye, FaTrashAlt } from 'react-icons/fa'
+import { FaEdit, FaEye, FaTrashAlt, FaUserPlus } from 'react-icons/fa'
 import Sidebar from '../components/Sidebar'
 import '../assets/css/pessoas.css'
-import { useState } from 'react'
 
-const DataTable = ({
-  data = [
+const DataTable = () => {
+  const [data, setData] = useState([
     {
       id: 1,
       name: 'John',
@@ -37,19 +41,64 @@ const DataTable = ({
       datafim: '24/09/2024',
       telefone: '(34) 99900-9900',
     },
-  ],
-}) => {
+  ])
+
   const [modal, setModal] = useState(false)
   const [selectedData, setSelectedData] = useState(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const [isNewRegistration, setIsNewRegistration] = useState(false)
 
-  const toggleModal = (item) => {
+  const toggleModal = (item, editing = false) => {
     setSelectedData(item)
+    setIsEditing(editing)
+    setIsNewRegistration(false)
     setModal(!modal)
   }
+
+  const toggleNewRegistrationModal = () => {
+    setSelectedData({
+      id: data.length + 1,
+      name: '',
+      datainicio: '',
+      datafim: '',
+      telefone: '',
+    })
+    setIsEditing(true)
+    setIsNewRegistration(true)
+    setModal(!modal)
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setSelectedData({ ...selectedData, [name]: value })
+  }
+
+  const handleSave = () => {
+    if (isNewRegistration) {
+      setData([...data, selectedData])
+    } else {
+      const updatedData = data.map((item) => (item.id === selectedData.id ? selectedData : item))
+      setData(updatedData)
+    }
+    setModal(false)
+  }
+
+  const handleDelete = (id) => {
+    const updatedData = data.filter((item) => item.id !== id)
+    setData(updatedData)
+  }
+
   return (
     <div className='d-flex'>
       <Sidebar />
       <Container className='pessoas'>
+        <Row className='mt-4  justify-content-end'>
+          <Col xs='auto'>
+            <Button color='secondary' onClick={toggleNewRegistrationModal} className='float-end'>
+              <FaUserPlus /> Novo Cadastro
+            </Button>
+          </Col>
+        </Row>
         <Table striped>
           <thead>
             <tr>
@@ -61,8 +110,8 @@ const DataTable = ({
             </tr>
           </thead>
           <tbody>
-            {data.map((item, index) => (
-              <tr key={index}>
+            {data.map((item) => (
+              <tr key={item.id}>
                 <th scope='row'>{item.id}</th>
                 <td>{item.name}</td>
                 <td>{item.datainicio}</td>
@@ -70,10 +119,20 @@ const DataTable = ({
                 <td>
                   <Row>
                     <Col className='text-end'>
-                      {/* <Button className='ms-1' color='secondary' size='sm'>
+                      <Button
+                        className='ms-1'
+                        color='secondary'
+                        size='sm'
+                        onClick={() => toggleModal(item, true)}
+                      >
                         <FaEdit />
-                      </Button> */}
-                      <Button className='ms-1' color='danger' size='sm'>
+                      </Button>
+                      <Button
+                        className='ms-1'
+                        color='danger'
+                        size='sm'
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <FaTrashAlt />
                       </Button>
                       <Button
@@ -81,9 +140,6 @@ const DataTable = ({
                         color='secondary'
                         size='sm'
                         onClick={() => toggleModal(item)}
-                        type='button'
-                        data-bs-toggle='modal'
-                        data-bs-target='#exampleModal'
                       >
                         <FaEye />
                       </Button>
@@ -96,31 +152,71 @@ const DataTable = ({
         </Table>
       </Container>
 
-      <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>
-          Paciente {selectedData ? selectedData.name : 'Modal Title'}
+      <Modal isOpen={modal} toggle={() => setModal(!modal)}>
+        <ModalHeader toggle={() => setModal(!modal)}>
+          {isNewRegistration
+            ? 'Novo Cadastro'
+            : `Paciente ${selectedData ? selectedData.name : ''}`}
         </ModalHeader>
         <ModalBody>
           {selectedData && (
-            <div className='cadastro-pessoa'>
-              <label htmlFor='id'>ID</label>
-              <input name='id' disabled value={selectedData.id} />
-              <label htmlFor='name'>Nome</label>
-              <input name='name' disabled value={selectedData.name} />
-              <label htmlFor='dtinicio'>Data Início: </label>
-              <input name='dtinicio' disabled value={selectedData.datainicio} />
-              <label htmlFor='dtfinal'>Data Fim:</label>
-              <input name='dtfinal' disabled value={selectedData.datafim} />
-              <label htmlFor='telefone'>Contato</label>
-              <input name='telefone' disabled value={selectedData.telefone} />
-            </div>
+            <Form className='cadastro-pessoa'>
+              <FormGroup>
+                <Label for='id'>ID</Label>
+                <Input name='id' disabled value={selectedData.id} />
+              </FormGroup>
+              <FormGroup>
+                <Label for='name'>Nome</Label>
+                <Input
+                  name='name'
+                  value={selectedData.name}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for='datainicio'>Data Início</Label>
+                <Input
+                  name='datainicio'
+                  value={selectedData.datainicio}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for='datafim'>Data Fim</Label>
+                <Input
+                  name='datafim'
+                  value={selectedData.datafim}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label for='telefone'>Contato</Label>
+                <Input
+                  name='telefone'
+                  value={selectedData.telefone}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                />
+              </FormGroup>
+            </Form>
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color='secondary' onClick={toggleModal}>
-            Close
+          {isEditing ? (
+            <Button color='primary' onClick={handleSave}>
+              Salvar
+            </Button>
+          ) : (
+            <Button color='secondary' onClick={() => setIsEditing(true)}>
+              Editar
+            </Button>
+          )}
+          <Button color='secondary' onClick={() => setModal(false)}>
+            Fechar
           </Button>
-          {/* <Button color='primary'>Save changes</Button> */}
         </ModalFooter>
       </Modal>
     </div>
