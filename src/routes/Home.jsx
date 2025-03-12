@@ -6,9 +6,7 @@ import { useNavigate } from 'react-router-dom'
 const Home = () => {
   const navigate = useNavigate()
 
-  const handleNavigate = (route) => {
-    navigate(route)
-  }
+  const handleNavigate = (route) => navigate(route)
 
   return (
     <div className='d-flex'>
@@ -17,15 +15,11 @@ const Home = () => {
         <h1>Bem vindo ao PsicoPanel!</h1>
         <h2 className='title'>Atalhos</h2>
         <div className='row'>
-          <div className='col-2 card-atalho'>
-            <div onClick={() => handleNavigate('/calendario')} className=''>
-              <FaCalendar className='fs-2 mb-2' /> Calendário
-            </div>
+          <div onClick={() => handleNavigate('/calendario')} className='col-2 card-atalho'>
+            <FaCalendar className='fs-2 mb-2' /> Calendário
           </div>
-          <div className='col-2 card-atalho'>
-            <div onClick={() => handleNavigate('/pessoas')} className=''>
-              <FaUser className='fs-2 mb-2' /> Pessoas
-            </div>
+          <div onClick={() => handleNavigate('/pessoas')} className='col-2 card-atalho'>
+            <FaUser className='fs-2 mb-2' /> Pessoas
           </div>
         </div>
         <h2 className='title'>Estatísticas</h2>
